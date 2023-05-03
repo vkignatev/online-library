@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Изменить книгу</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h3 class="mt-3 mb-3" th:text="'Обновить книгу ' + ${book.getBookTitle()}"></h3>
+    <form enctype="multipart/form-data" class="needs-validation" novalidate style="max-width: 50vw" method="POST" th:action="@{/books/update}" th:object="${bookForm}">
+        <input type="hidden" name="id"
+               th:value="${book.getId()}">
+        <div class="mt-3 row g-2">
+            <div class="col-md">
+                <div class="form-floating">
+                    <!--Название поля инпута должно строго соответствовать названию поля класса (DTO)-->
+                    <input name="bookTitle" th:value="${book.getBookTitle()}" type="text" class="form-control" id="title" placeholder="Название книги" required>
+                    <label for="title">Название</label>
+                    <div class="invalid-feedback">Обязательное поле для заполнения</div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <select class="form-select" name="genre" id="genre" required th:object="${book}" th:field="*{genre}">
+                        <option th:value="default">Выберете жанр из списка</option>
+                        <option th:selected="${book.getGenre().getGenreTextDisplay()}"
+                                th:each="genre : ${T(com.sber.java13spring.java13springproject.libraryproject.model.Genre).values()}"
+                                th:value="${genre}" th:text="${genre.getGenreTextDisplay()}"></option>
+                    </select>
+                    <label for="genre">Жанр</label>
+                    <div class="invalid-feedback">Обязательное поле для заполнения</div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3 form-floating">
+            <input type="hidden" th:value="${book.getOnlineCopyPath()}" name="onlineCopy" class="form-control form-control-sm">
+            <input name="file" type="file" class="form-control form-control-sm" id="onlineCopy" placeholder="Онлайн копия файла" style="padding-top: 2rem;">
+            <label for="onlineCopy">Онлайн копия</label>
+        </div>
+        <div class="mt-3 row g-2">
+            <div class="col-md">
+                <div class="form-floating">
+                    <input name="amount" th:value="${book.getAmount()}" type="number" class="form-control" id="amount" placeholder="Количество книг" value="1" required>
+                    <label for="amount">Количество книг</label>
+                    <div class="invalid-feedback">Обязательное поле для заполнения</div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <input name="pageCount" th:value="${book.getPageCount()}" type="number" class="form-control" id="pageCount" placeholder="Количество страниц" value="1">
+                    <label for="pageCount">Количество страниц</label>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3 row g-2">
+            <div class="col-md">
+                <div class="form-floating">
+                    <input name="publish" th:value="${book.getPublish()}" type="text" class="form-control" id="publish" placeholder="Издательство" required>
+                    <label for="publish">Издательство</label>
+                    <div class="invalid-feedback">Обязательное поле для заполнения</div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <input name="publishDate" th:value="${book.getPublishDate()}" type="date" class="form-control" id="date" placeholder="Дата публикации" required>
+                    <label for="date">Дата издания</label>
+                    <div class="invalid-feedback">Обязательное поле для заполнения</div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3 row g-2">
+            <div class="col-md">
+                <div class="form-floating">
+                    <input name="storagePlace" th:value="${book.getStoragePlace()}" type="text" class="form-control" id="storage" placeholder="Место хранения">
+                    <label for="storage">Место хранения</label>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <textarea name="description" th:value="${book.getDescription()}" type="text" class="form-control" id="description" placeholder="Описание"></textarea>
+                    <label for="description">Описание</label>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3 row g-2">
+            <button type="submit" class="btn btn-primary" onclick="validateForm()">Обновить</button>
+            <button type="button" class="btn btn-secondary" onclick="window.history.back()">Назад</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
